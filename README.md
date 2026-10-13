@@ -55,6 +55,14 @@ wedding-site/
 
 ## 公開（GitHub Pages）
 
+変更したら次の1行で公開できます（CSS/JSの ?v= 番号の更新・コミット・プッシュをまとめて行います）。
+
+```
+powershell -ExecutionPolicy Bypass -File tools\publish.ps1 "変更内容のメモ"
+```
+
+### 手動でやる場合
+
 写真を変えたら 2 を実行してから:
 
 ```n git add -A
