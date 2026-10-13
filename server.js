@@ -13,10 +13,16 @@ const TYPES = {
 };
 const RELOAD = `<script>new EventSource("/__reload").onmessage=()=>location.reload()</script>`;
 
+// Windows はファイルを読んだだけでも変更通知が来るので、HTML/CSS/JS の更新日時が変わったときだけリロードする
 const clients = new Set();
+const mtimes = new Map();
 let timer = null;
 fs.watch(ROOT, { recursive: true }, (_e, file) => {
-  if (!file || file.includes("node_modules")) return;
+  if (!file || !/\.(html|css|js)$/i.test(file) || /^(node_modules|\.git)[\\/]/.test(file)) return;
+  let m;
+  try { m = fs.statSync(path.join(ROOT, file)).mtimeMs; } catch { return; }
+  if (mtimes.get(file) === m) return;
+  mtimes.set(file, m);
   clearTimeout(timer);
   timer = setTimeout(() => clients.forEach(res => res.write("data: reload\n\n")), 150);
 });

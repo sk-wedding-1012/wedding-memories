@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Photo Gallery | Wedding Memories</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Shippori+Mincho:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="gallery-page">
+
+<header class="g-head">
+  <a class="g-back" href="index.html#photos">← トップへ</a>
+  <div class="g-title"><span class="en">Photo Gallery</span><small id="gCount"></small></div>
+  <span class="g-back" aria-hidden="true" style="visibility:hidden">← トップへ</span>
+</header>
+
+<div class="g-tools">
+  <div class="tabs" id="tabs"></div>
+  <div class="g-actions">
+    <button class="btn line" id="slideBtn">▶ スライドショーで見る</button>
+    <span id="zipWrap"></span>
+  </div>
+  <p class="g-note">タップで拡大・拡大画面の「保存 ↓」で保存できます</p>
+</div>
+
+<main class="g-grid" id="grid"></main>
+<div class="g-more" id="sentinel"></div>
+
+<footer>
+  <div class="en">Thank you</div>
+  <p style="margin-top:10px"><a href="index.html">トップページへ戻る</a></p>
+</footer>
+
+<script src="config.js"></script>
+<script src="photos.js"></script>
+<script src="assets/common.js"></script>
+<script>
+/* 写真は60枚ずつ、スクロールに合わせて追加で表示する */
+const BATCH = 60;
+let current = "all", list = [], shown = 0;
+
+function sceneFromHash(){
+  const id = decodeURIComponent(location.hash.slice(1));
+  return inScene(id).length ? id : "all";
+}
+function renderTabs(){
+  const tabs = [{id:"all",label:"すべて",n:PHOTOS.length}, ...SCENES.map(s => ({...s, n:inScene(s.id).length})).filter(s => s.n)];
+  $("#tabs").innerHTML = tabs.map(t => `<button class="tab ${t.id===current?"on":""}" data-id="${esc(t.id)}">${esc(t.label)} <small>${t.n}</small></button>`).join("");
+}
+function tile(p, i){
+  return `<button class="g-item" data-i="${i}" aria-label="写真 ${i+1} を拡大">
+    <img src="${esc(SMALL_DIR+p.file)}" alt="" loading="lazy" decoding="async" data-fb data-ratio="1/1"></button>`;
+}
+function more(){
+  if (shown >= list.length) return;
+  const next = list.slice(shown, shown + BATCH);
+  $("#grid").insertAdjacentHTML("beforeend", next.map((p,k) => tile(p, shown + k)).join(""));
+  shown += next.length;
+  $("#sentinel").textContent = shown < list.length ? "読み込み中…" : "";
+}
+function select(id, fromHash){
+  current = id;
+  list = id==="all" ? PHOTOS : inScene(id);
+  shown = 0; $("#grid").innerHTML = "";
+  renderTabs(); more(); fill();
+  $("#gCount").textContent = `${id==="all" ? "すべて" : sceneLabel(id)}・${list.length}枚`;
+  if (!fromHash) history.replaceState(null, "", id==="all" ? location.pathname : "#"+id);
+}
+
+// 画面の下から1200px以内に末尾が来たら次を足す（足しても届いていなければ続けて足す）
+function fill(){
+  while (shown < list.length && $("#sentinel").getBoundingClientRect().top < innerHeight + 1200) more();
+}
+let ticking = false;
+const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; fill(); }); } };
+window.addEventListener("scroll", onScroll, {passive:true});
+window.addEventListener("resize", onScroll);
+$("#tabs").addEventListener("click", e => {
+  const b = e.target.closest(".tab"); if (!b) return;
+  select(b.dataset.id); window.scrollTo({top:0, behavior:"smooth"});
+});
+$("#grid").addEventListener("click", e => { const b = e.target.closest(".g-item"); if (b) openLb(list, +b.dataset.i, false); });
+$("#slideBtn").onclick = () => { if (list.length) openLb(list, 0, true); };
+window.addEventListener("hashchange", () => select(sceneFromHash(), true));
+if (CONFIG.zipUrl) $("#zipWrap").innerHTML = `<a class="btn" href="${esc(CONFIG.zipUrl)}" target="_blank" rel="noopener">写真をまとめて保存 ↓</a>`;
+select(sceneFromHash(), true);
+</script>
+</body>
+</html>

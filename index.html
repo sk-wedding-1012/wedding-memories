@@ -7,155 +7,13 @@
 <title>Wedding Memories | 2026.10.12</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Shippori+Mincho:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --ivory:#fbf7f0; --cream:#f3ebdd; --gold:#b8955a; --gold-d:#8f6f3a;
-  --sage:#7d8c74; --ink:#3b342c; --soft:#7a7066; --rose:#e9d3cc;
-  --serif-en:'Cormorant Garamond',serif;
-  --serif-jp:'Shippori Mincho','Hiragino Mincho ProN','Yu Mincho',serif;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--ivory);color:var(--ink);font-family:var(--serif-jp);line-height:1.9;-webkit-font-smoothing:antialiased}
-img{max-width:100%;display:block}
-a{color:inherit}
-button{font-family:inherit}
-
-/* Hero */
-.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px;position:relative;overflow:hidden;
-  background:radial-gradient(ellipse at 20% 10%,#fff 0%,transparent 55%),radial-gradient(ellipse at 85% 90%,var(--rose) 0%,transparent 55%),var(--cream)}
-.hero::before,.hero::after{content:"";position:absolute;inset:18px;border:1px solid var(--gold);opacity:.55;pointer-events:none}
-.hero::after{inset:26px;opacity:.25}
-.hero .eyebrow{font-family:var(--serif-en);letter-spacing:.5em;font-size:.85rem;color:var(--gold-d);text-transform:uppercase}
-.hero h1{font-family:var(--serif-en);font-weight:400;font-style:italic;font-size:clamp(2.6rem,11vw,5.2rem);line-height:1.15;margin:22px 0 10px}
-.hero .amp{color:var(--gold);padding:0 .15em}
-.hero .date{font-family:var(--serif-en);letter-spacing:.35em;font-size:1.1rem;color:var(--gold-d)}
-.hero .venue{font-size:.85rem;color:var(--soft);letter-spacing:.2em;margin-top:6px}
-.hero .thanks{margin-top:26px;font-size:.95rem;color:var(--soft);max-width:30em}
-.orn{display:flex;align-items:center;gap:14px;justify-content:center;color:var(--gold);margin:18px 0}
-.orn::before,.orn::after{content:"";width:64px;height:1px;background:var(--gold);opacity:.7}
-.scroll{position:absolute;bottom:44px;font-family:var(--serif-en);letter-spacing:.3em;font-size:.75rem;color:var(--gold-d);animation:bob 2.4s ease-in-out infinite}
-@keyframes bob{50%{transform:translateY(6px)}}
-
-/* Nav */
-nav{position:sticky;top:0;z-index:20;background:rgba(251,247,240,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(184,149,90,.35)}
-nav ul{list-style:none;display:flex;gap:4px;overflow-x:auto;justify-content:center;padding:10px 12px;scrollbar-width:none}
-nav ul::-webkit-scrollbar{display:none}
-nav a{display:block;white-space:nowrap;text-decoration:none;font-size:.82rem;padding:4px 14px;border-radius:99px;color:var(--soft);transition:.2s}
-nav a:hover,nav a.on{background:var(--gold);color:#fff}
-
-/* Sections */
-section{padding:84px 22px;max-width:980px;margin:0 auto}
-.sec-head{text-align:center;margin-bottom:44px}
-.sec-head .en{font-family:var(--serif-en);font-style:italic;font-size:clamp(2rem,7vw,3rem);color:var(--gold-d);line-height:1.1}
-.sec-head h2{font-weight:500;font-size:1.05rem;letter-spacing:.3em;margin-top:6px}
-.sec-head p{color:var(--soft);font-size:.9rem;margin-top:12px}
-.band{background:var(--cream);max-width:none;padding-left:0;padding-right:0}
-.band>.inner{max-width:980px;margin:0 auto;padding:0 22px}
-
-/* Timeline */
-.timeline{position:relative;max-width:720px;margin:0 auto}
-.timeline::before{content:"";position:absolute;left:19px;top:6px;bottom:6px;width:1px;background:linear-gradient(var(--gold),rgba(184,149,90,.15))}
-.phase{position:relative;margin:6px 0 26px 58px;font-family:var(--serif-en);font-style:italic;font-size:1.35rem;color:var(--gold-d);letter-spacing:.08em}
-.phase small{display:block;font-family:var(--serif-jp);font-style:normal;font-size:.78rem;color:var(--soft);letter-spacing:.2em}
-.step{position:relative;padding:0 0 42px 58px}
-.step .dot{position:absolute;left:10px;top:6px;width:19px;height:19px;border-radius:50%;background:var(--ivory);border:1.5px solid var(--gold)}
-.step .dot::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--gold)}
-.step .time{font-family:var(--serif-en);letter-spacing:.2em;color:var(--gold-d);font-size:.95rem}
-.step h3{font-weight:500;font-size:1.15rem;margin:2px 0 6px}
-.step p{color:var(--soft);font-size:.92rem}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.chip{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-size:.78rem;padding:5px 14px;border:1px solid var(--gold);border-radius:99px;color:var(--gold-d);background:#fff;transition:.2s;cursor:pointer}
-.chip:hover{background:var(--gold);color:#fff}
-
-/* Inline photo carousel (slides) */
-.car{position:relative;margin-top:14px}
-.car .track{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px}
-.car .track::-webkit-scrollbar{display:none}
-.car .sl{flex:0 0 min(72%,300px);aspect-ratio:4/3;scroll-snap-align:start;background:var(--cream);cursor:zoom-in;overflow:hidden;border:1px solid rgba(184,149,90,.35)}
-.car .sl img{width:100%;height:100%;object-fit:cover}
-.car .sl .ph-ph{width:100%;height:100%}
-.car .nb{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--gold-d);font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18)}
-.car .cprev{left:-8px}.car .cnext{right:-8px}
-@media(hover:none){.car .nb{display:none}}
-
-/* Movie cards */
-.movies{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
-.mcard{background:#fff;border:1px solid rgba(184,149,90,.4);padding:12px;text-decoration:none;display:block;transition:.25s;cursor:pointer}
-.mcard:hover{transform:translateY(-4px);box-shadow:0 14px 30px -14px rgba(143,111,58,.45)}
-.mthumb{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--rose),var(--cream) 60%,#e5ead9)}
-.mthumb.dq{background:linear-gradient(135deg,#1c2a52,#3a5a9a)}
-.mthumb.sync{background:linear-gradient(135deg,#2b1d3d,#7a3f8f 70%,#e0a8c9)}
-.mthumb.end{background:linear-gradient(135deg,#2e3a2a,#7d8c74)}
-.play{width:56px;height:56px;border-radius:50%;border:1.5px solid rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.18);transition:.25s}
-.mcard:hover .play{transform:scale(1.1);background:rgba(184,149,90,.85)}
-.play svg{width:20px;height:20px;margin-left:3px;fill:#fff}
-.mcard h3{font-weight:500;font-size:1.02rem;margin:14px 4px 2px}
-.mcard p{font-size:.82rem;color:var(--soft);margin:0 4px 6px}
-.mcard .go{font-family:var(--serif-en);letter-spacing:.2em;font-size:.75rem;color:var(--gold-d);margin:0 4px 4px}
-.note{text-align:center;color:var(--soft);font-size:.78rem;margin-top:22px}
-
-/* Gallery */
-.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
-.tab{font-size:.82rem;padding:6px 16px;border-radius:99px;border:1px solid var(--gold);background:transparent;color:var(--gold-d);cursor:pointer;transition:.2s}
-.tab.on,.tab:hover{background:var(--gold);color:#fff}
-.gtools{text-align:center;margin-bottom:22px}
-.grid{columns:2;column-gap:10px}
-@media(min-width:640px){.grid{columns:3}}
-@media(min-width:900px){.grid{columns:4}}
-.ph{break-inside:avoid;margin-bottom:10px;position:relative;cursor:zoom-in;background:var(--cream);overflow:hidden}
-.ph img{width:100%;height:auto;transition:transform .5s}
-.ph:hover img{transform:scale(1.04)}
-.ph-ph{display:flex;align-items:center;justify-content:center;color:var(--gold);font-family:var(--serif-en);font-size:1.6rem;background:linear-gradient(135deg,var(--rose),var(--cream))}
-.ph .dl{position:absolute;right:6px;bottom:6px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--gold-d);font-size:.95rem;opacity:0;transition:.2s}
-.ph:hover .dl{opacity:1}
-@media(hover:none){.ph .dl{opacity:1}}
-.allzip{text-align:center;margin-top:30px}
-.btn{display:inline-block;text-decoration:none;background:var(--gold);color:#fff;padding:10px 28px;letter-spacing:.2em;font-size:.82rem;border-radius:2px;transition:.2s;border:0;cursor:pointer}
-.btn:hover{background:var(--gold-d)}
-.btn.line{background:transparent;color:var(--gold-d);border:1px solid var(--gold)}
-.btn.line:hover{background:var(--gold);color:#fff}
-
-/* Lightbox / video modal */
-.ov{position:fixed;inset:0;background:rgba(30,25,20,.94);z-index:50;display:none;align-items:center;justify-content:center;flex-direction:column;padding:16px}
-.ov.open{display:flex}
-#lbMedia{display:flex;align-items:center;justify-content:center;touch-action:pan-y}
-#lbMedia img{max-height:76vh;max-width:96vw;object-fit:contain}
-#lbMedia .ph-ph{width:min(86vw,520px);aspect-ratio:3/2;font-size:2rem}
-.ov .bar{margin-top:16px;display:flex;gap:10px;align-items:center;color:#fff;font-size:.85rem;flex-wrap:wrap;justify-content:center}
-.ov .bar a,.ov .bar button{color:#fff;background:transparent;border:1px solid rgba(255,255,255,.6);padding:7px 16px;border-radius:99px;text-decoration:none;cursor:pointer;font-size:.8rem}
-.ov .bar a:hover,.ov .bar button:hover{background:var(--gold);border-color:var(--gold)}
-.ov .x{position:absolute;top:12px;right:18px;font-size:1.9rem;color:#fff;cursor:pointer;background:none;border:0}
-.ov .cap{color:#e8dcc6;font-size:.85rem;margin-top:10px;min-height:1.4em}
-.ov .cnt{color:#bfae92;font-family:var(--serif-en);letter-spacing:.2em}
-.vbox{width:min(96vw,960px,calc((100svh - 160px)*16/9));aspect-ratio:16/9;background:#000;position:relative;overflow:hidden}
-.vbox iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;transform-origin:0 0}
-.vnote{color:#cdbfa6;font-size:.78rem;margin-top:12px}
-
-/* End roll */
-.endroll{background:linear-gradient(#2b2722,#3b342c);color:#f3ebdd;max-width:none}
-.endroll .sec-head .en{color:#d9bd8a}
-.endroll .sec-head h2{color:#f3ebdd}
-.endroll>*{max-width:980px;margin-left:auto;margin-right:auto}
-.credits{max-width:560px!important;text-align:center}
-.credits .role{font-family:var(--serif-en);letter-spacing:.35em;font-size:.78rem;color:#d9bd8a;margin-top:34px;text-transform:uppercase}
-.credits .nm{font-size:1.05rem;margin-top:6px}
-.credits .last{margin-top:54px;font-family:var(--serif-en);font-style:italic;font-size:1.6rem;color:#d9bd8a}
-.endroll .mcard{max-width:420px;margin:0 auto 10px;background:#4a4238;border-color:rgba(217,189,138,.5)}
-.endroll .mcard p{color:#c9bca5}
-
-footer{text-align:center;padding:60px 20px 70px;color:var(--soft);font-size:.8rem;border-top:1px solid rgba(184,149,90,.35)}
-footer .en{font-family:var(--serif-en);font-style:italic;font-size:1.4rem;color:var(--gold-d)}
-
-.fade{opacity:0;transform:translateY(18px);transition:opacity .9s,transform .9s}
-.fade.in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){.fade{opacity:1;transform:none}.scroll{animation:none}}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Shippori+Mincho:wght@400;500;700&family=Klee+One:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
 <header class="hero" id="top">
+  <canvas class="shower" id="heroShower" aria-hidden="true"></canvas>
   <div class="eyebrow">Wedding Memories</div>
   <h1><span id="nameA"></span><span class="amp">&amp;</span><span id="nameB"></span></h1>
   <div class="orn">❦</div>
@@ -188,10 +46,10 @@ footer .en{font-family:var(--serif-en);font-style:italic;font-size:1.4rem;color:
     <div class="sec-head">
       <div class="en">Movies</div>
       <h2>ムービー</h2>
-      <p>タップするとこのページ上で再生できます</p>
+      <p id="movieLead">タップするとこのページ上で再生できます</p>
     </div>
     <div class="movies" id="movieGrid"></div>
-    <p class="note">※ 再生できない場合は、再生画面の「Googleドライブで開く」をお使いください</p>
+    <p class="note" id="movieNote">※ 再生できない場合は、再生画面の「Googleドライブで開く」をお使いください</p>
   </div>
 </section>
 
@@ -199,12 +57,13 @@ footer .en{font-family:var(--serif-en);font-style:italic;font-size:1.4rem;color:
   <div class="sec-head">
     <div class="en">Photo Gallery</div>
     <h2>フォト</h2>
-    <p>タップで拡大・各写真の右下の「↓」で保存できます</p>
+    <p>当日の写真から一部をご紹介します<br>すべての写真はギャラリーページでご覧いただけます</p>
   </div>
-  <div class="tabs" id="tabs"></div>
-  <div class="gtools"><button class="btn line" id="slideBtn">▶ スライドショーで見る</button></div>
-  <div class="grid" id="grid"></div>
-  <div class="allzip" id="zipWrap"></div>
+  <div class="hl" id="highlights"></div>
+  <div class="allzip">
+    <a class="btn" href="gallery.html" id="galleryBtn">すべての写真を見る</a>
+    <div id="zipWrap" style="margin-top:14px"></div>
+  </div>
 </section>
 
 <section id="endroll" class="endroll fade">
@@ -214,7 +73,8 @@ footer .en{font-family:var(--serif-en);font-style:italic;font-size:1.4rem;color:
     <p style="color:#c9bca5">本日お越しくださった皆さまへ</p>
   </div>
   <div id="endMovie"></div>
-  <div class="credits" id="credits"></div>
+  <div class="roll" id="roll" title="タップで一時停止"><div class="credits" id="credits"></div></div>
+  <p class="roll-hint">クレジットは自動で流れます（タップで一時停止）</p>
 </section>
 
 <footer>
@@ -222,129 +82,20 @@ footer .en{font-family:var(--serif-en);font-style:italic;font-size:1.4rem;color:
   <p style="margin-top:10px" id="footText"></p>
 </footer>
 
-<!-- Photo lightbox / slideshow -->
-<div class="ov" id="lb" role="dialog" aria-modal="true">
-  <button class="x" id="lbClose" aria-label="閉じる">×</button>
-  <div id="lbMedia"></div>
-  <div class="cap" id="lbCap"></div>
-  <div class="cnt" id="lbCnt"></div>
-  <div class="bar">
-    <button id="lbPrev">← 前へ</button>
-    <button id="lbPlay">▶ スライドショー</button>
-    <a id="lbDl" download>保存 ↓</a>
-    <button id="lbNext">次へ →</button>
-  </div>
-</div>
-
 <!-- Video modal -->
 <div class="ov" id="vm" role="dialog" aria-modal="true">
   <button class="x" id="vmClose" aria-label="閉じる">×</button>
   <div class="vbox"><iframe id="vmFrame" allow="autoplay; fullscreen" allowfullscreen title="video"></iframe></div>
   <p class="vnote" id="vmTitle"></p>
+  <p class="vtip" id="vmTip"></p>
   <div class="bar"><a id="vmOpen" target="_blank" rel="noopener">Googleドライブで開く ↗</a></div>
 </div>
 
+<script src="config.js"></script>
 <script src="photos.js"></script>
+<script src="assets/common.js"></script>
+<script src="assets/shower.js"></script>
 <script>
-/* =====================================================
-   CONFIG（ここを書き換える）
-   ===================================================== */
-const CONFIG = {
-  nameA: "Groom",             // 新郎の名前（要確認：フルネーム/イニシャル/愛称）
-  nameB: "Bride",             // 新婦の名前
-  dateText: "2026 . 10 . 12",
-  venueText: "ACCORD LAURIER",
-  thanks: "お忙しい中ご列席くださり、本当にありがとうございました。\nあの日の景色を、ここにそっと残しておきます。",
-  footText: "2026.10.12　Groom & Bride",
-  zipUrl: "",                 // 写真まとめて保存用のGoogleドライブURL（なければ空）
-  videoMode: "modal",         // "modal"=ページ上で再生 / "link"=Googleドライブを新しいタブで開く
-  slideSeconds: 4,            // スライドショーの切替秒数
-};
-
-// 動画：url にGoogleドライブの共有リンク（「リンクを知っている全員」）を入れる
-const MOVIES = {
-  opening: { title:"オープニングムービー「LOVE SYNC」", desc:"リズムゲーム風のオープニング映像", url:"https://drive.google.com/file/d/1wquaZTp3oqBS5t1DAMDdhtrKgHqeQWZE/view?usp=sharing", style:"sync" },
-  profile: { title:"プロフィールムービー",               desc:"ドラクエ風・ふたりのこれまで",     url:"https://drive.google.com/file/d/1COxaFFNYu1JYIoZBVfWYRRc4nKk6OyX2/view?usp=sharing", style:"dq" },
-  ending:  { title:"エンドロールムービー",               desc:"ご列席の皆さまへの感謝を込めて",   url:"https://drive.google.com/file/d/16G1g4jcuKUzzYhb8ngBkZcPXBsP0N3at/view?usp=sharing", style:"end" },
-};
-
-// 写真のシーン（タブ兼・式の流れの各場面）
-const SCENES = [
-  { id:"prep",     label:"お支度" },
-  { id:"meet",     label:"ファーストミート" },
-  { id:"enter",    label:"挙式入場" },
-  { id:"vows",     label:"誓い・指輪・証明書" },
-  { id:"garden",   label:"ガーデン" },
-  { id:"party",    label:"入場・乾杯" },
-  { id:"flambe",   label:"キッチンオープン" },
-  { id:"game",     label:"ゲスト参加イベント" },
-  { id:"remake",   label:"リメイク・デザート" },
-  { id:"thanks",   label:"ご挨拶・花束" },
-  { id:"farewell", label:"門出・送賓" },
-];
-
-// 式の流れ（式場の進行表をもとに作成。【要確認】は実際にどうなったか確認して直す）
-// phase: 区切り見出し / movies: MOVIES のキー / scene: SCENES のid
-const FLOW = [
-  { phase:"Getting Ready", sub:"支度・挙式前", time:"6:20", title:"お支度", desc:"朝いちばんから、それぞれお支度スタート。", scene:"prep" },
-  { time:"8:45", title:"ファーストミート・家族対面", desc:"挙式会場でふたりが初めて顔を合わせ、ご家族とも対面しました。", scene:"meet" },
-
-  { phase:"Ceremony", sub:"人前式 10:00〜", time:"10:00", title:"新郎・新婦入場", desc:"ご両親に支度を整えてもらい、みなさまに見守られて入場しました。", scene:"enter" },
-  { time:"10:05", title:"誓いの言葉・指輪の交換・結婚証明書", desc:"誓いのあと、指輪を交換。キーボードの結婚証明書をみなさまの前で完成させました。【要確認：誓い・キスの内容】", scene:"vows" },
-  { time:"10:20", title:"ガーデン：シャワー・集合写真・ゲームタイム", desc:"リボン＆バブルシャワーで退場し、集合写真とストラックアウトで盛り上がりました。", scene:"garden" },
-
-  { phase:"Wedding Party", sub:"ウェディングパーティ 10:45〜", time:"10:45", title:"オープニングムービー", desc:"手作りのリズムゲーム風ムービーで開宴。", movies:["opening"] },
-  { time:"10:50", title:"入場・ウェルカムスピーチ・乾杯", desc:"新郎のスピーチのあと、みなさまと乾杯。", scene:"party" },
-  { time:"11:15", title:"キッチンオープン・お写真タイム", desc:"新郎のフランベパフォーマンスでキッチンがオープン。料理長のメニュー紹介と撮影タイム。", scene:"flambe" },
-  { time:"11:40", title:"ゲスト参加型イベント", desc:"ケーキの代わりに、みなさまと楽しんだ時間。【要確認：実際の内容】", scene:"game" },
-  { time:"11:55", title:"中座・プロフィールムービー", desc:"ふたりが中座している間に、ふたりのこれまでをドラクエ風に紹介。", movies:["profile"] },
-  { time:"12:20", title:"リメイク入場・デザートビュッフェ", desc:"ガーデンでデザートビュッフェ。コーヒーや紅茶とともに。", scene:"remake" },
-  { time:"13:00", title:"テーブルインタビュー・お手紙・花束・謝辞", desc:"ご両親へ感謝を伝え、花束と記念品をお渡ししました。", scene:"thanks" },
-  { time:"13:20", title:"エンドロール・門出・送賓", desc:"エンドロールのあと、みなさまをお見送りしました。", movies:["ending"], scene:"farewell" },
-];
-
-/* 写真：photos/シーンid/ のフォルダに入れて tools/build-photos.ps1 を実行すると、
-   thumbs/（軽量版・同じフォルダ構成）と photos.js（写真リスト）が自動で作られる。
-   シーンを変えるときは写真を別のフォルダへ移動して再実行（photos/ 直下の写真は「すべて」にだけ表示）。
-   キャプションを付けたい写真は CAPS に "フォルダ/ファイル名":"文章" を足す */
-const CAPS  = { /* "enter/S__18169879_0.jpg": "入場" */ };
-const PHOTO_DIR = "large/";    // 保存用（長辺2400px）。元写真の photos/ は公開しない
-const THUMB_DIR = "thumbs/";   // 軽量版を作らない場合は "photos/" にする
-
-// エンドロール（役割と名前。【要確認】実際のエンドロールに合わせる）
-const CREDITS = [
-  { role:"Bride & Groom",   names:["Groom","Bride"] },
-  { role:"Opening Movie",   names:["LOVE SYNC"] },
-  { role:"Profile Movie",   names:["ドラクエ風プロフィールムービー"] },
-  { role:"Special Thanks",  names:["ご列席の皆さま","ご家族の皆さま","式場スタッフの皆さま"] },
-];
-const CREDIT_LAST = "Thank you for being part of our day.";
-
-/* =====================================================
-   以下は触らなくてOK
-   ===================================================== */
-const $ = (s, el=document) => el.querySelector(s);
-const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-// シーン順 → 未分類の順に並べる
-const sceneOrder = id => { const i = SCENES.findIndex(s => s.id===id); return i<0 ? SCENES.length : i; };
-const PHOTOS = (window.PHOTO_LIST||[])
-  .map((p,n) => ({ scene:p.scene||"", file:p.file, cap:CAPS[p.file]||"", n }))
-  .sort((a,b) => sceneOrder(a.scene)-sceneOrder(b.scene) || a.n-b.n);
-const inScene = id => PHOTOS.filter(p => p.scene===id);
-const baseName = f => f.split("/").pop();
-
-// 画像が無いとき・読み込み失敗時は「♡」の代わり表示に差し替え
-document.addEventListener("error", e => {
-  const t = e.target;
-  if (t.tagName==="IMG" && t.hasAttribute("data-fb")) {
-    const d = document.createElement("div");
-    d.className = "ph-ph"; d.textContent = "♡";
-    if (t.dataset.ratio) d.style.aspectRatio = t.dataset.ratio;
-    t.replaceWith(d);
-  }
-}, true);
-
 // Hero / footer
 $("#nameA").textContent = CONFIG.nameA;
 $("#nameB").textContent = CONFIG.nameB;
@@ -363,45 +114,62 @@ function movieCard(key){
 }
 $("#movieGrid").innerHTML = Object.keys(MOVIES).filter(k=>k!=="ending").map(movieCard).join("");
 $("#endMovie").innerHTML = movieCard("ending");
+if (CONFIG.videoMode === "link") {
+  $("#movieLead").textContent = "タップするとGoogleドライブが開き、高画質で再生できます";
+  $("#movieNote").textContent = "※ スマホではGoogleドライブのアプリ、またはブラウザで再生されます";
+}
 
-function driveEmbed(url){
-  const m = String(url).match(/\/d\/([\w-]{10,})/) || String(url).match(/[?&]id=([\w-]{10,})/);
-  return m ? `https://drive.google.com/file/d/${m[1]}/preview` : null;
+// 動画のURLから埋め込み用URLを作る。YouTube（限定公開でOK）と Googleドライブに対応
+function videoEmbed(url){
+  const u = String(url);
+  const yt = u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/);
+  if (yt) return { kind:"youtube", src:`https://www.youtube-nocookie.com/embed/${yt[1]}?rel=0&playsinline=1&autoplay=1` };
+  const d = u.match(/\/d\/([\w-]{10,})/) || u.match(/[?&]id=([\w-]{10,})/);
+  if (d) return { kind:"drive", src:`https://drive.google.com/file/d/${d[1]}/preview` };
+  return null;
 }
 const vm = $("#vm");
-// Googleドライブの再生画面は幅が狭いと中身がはみ出すので、640px幅で描画して縮小表示する
+let videoKind = "";
+// Googleドライブの再生画面は幅が狭いと中身がはみ出すので、640px幅で描画して縮小表示する（YouTubeは不要）
 const VIDEO_MIN_W = 640;
 function fitVideo(){
   const f = $("#vmFrame"), w = $(".vbox").clientWidth;
-  if (w && w < VIDEO_MIN_W) {
+  if (videoKind === "drive" && w && w < VIDEO_MIN_W) {
     f.style.width = VIDEO_MIN_W + "px"; f.style.height = VIDEO_MIN_W*9/16 + "px";
     f.style.transform = `scale(${w/VIDEO_MIN_W})`;
   } else { f.style.width = f.style.height = f.style.transform = ""; }
 }
 window.addEventListener("resize", () => { if (vm.classList.contains("open")) fitVideo(); });
 function openVideo(key){
-  const m = MOVIES[key], emb = driveEmbed(m.url);
+  const m = MOVIES[key], emb = videoEmbed(m.url);
   if (CONFIG.videoMode !== "modal" || !emb) { window.open(m.url, "_blank", "noopener"); return; }
-  $("#vmFrame").src = emb;
+  videoKind = emb.kind;
+  $("#vmFrame").src = emb.src;
   $("#vmTitle").textContent = m.title;
+  $("#vmTip").textContent = emb.kind === "drive" ? "画質が粗いときは、再生画面の歯車アイコンから画質を選ぶか、全画面にしてください" : "";
   $("#vmOpen").href = m.url;
+  $("#vmOpen").textContent = emb.kind === "youtube" ? "YouTubeで開く ↗" : "Googleドライブで開く ↗";
   vm.classList.add("open"); document.body.style.overflow = "hidden";
   fitVideo();
 }
 function closeVideo(){ $("#vmFrame").src = "about:blank"; vm.classList.remove("open"); document.body.style.overflow = ""; }
 $("#vmClose").onclick = closeVideo;
 vm.addEventListener("click", e => { if (e.target===vm) closeVideo(); });
+document.addEventListener("keydown", e => { if (e.key==="Escape" && vm.classList.contains("open")) closeVideo(); });
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-k]"); if (!a) return;
   e.preventDefault(); openVideo(a.dataset.k);
 });
 
-/* ---------- 式の流れ（＋横スワイプのスライド） ---------- */
+/* ---------- 式の流れ（＋横スワイプのスライド。各場面は先頭の数枚だけ） ---------- */
 function carousel(sceneId){
-  const list = inScene(sceneId); if (!list.length) return "";
+  const all = inScene(sceneId); if (!all.length) return "";
+  const list = all.slice(0, CONFIG.carouselCount);
   const slides = list.map((p,i) => `<div class="sl" data-scene="${esc(sceneId)}" data-i="${i}">
-    <img src="${esc(THUMB_DIR+p.file)}" alt="${esc(p.cap||"")}" loading="lazy" data-fb data-ratio="4/3"></div>`).join("");
-  return `<div class="car"><div class="track">${slides}</div>
+    <img src="${esc(SMALL_DIR+p.file)}" alt="${esc(p.cap||"")}" loading="lazy" data-fb data-ratio="4/3"></div>`).join("");
+  const more = all.length > list.length
+    ? `<a class="sl more" href="gallery.html#${esc(sceneId)}"><span>もっと見る<br><small>全${all.length}枚 →</small></span></a>` : "";
+  return `<div class="car"><div class="track">${slides}${more}</div>
     <button class="nb cprev" aria-label="前">‹</button><button class="nb cnext" aria-label="次">›</button></div>`;
 }
 let tl = "";
@@ -409,8 +177,9 @@ FLOW.forEach(s => {
   if (s.phase) tl += `<div class="phase fade">${esc(s.phase)}<small>${esc(s.sub||"")}</small></div>`;
   const chips = [];
   (s.movies||[]).forEach(k => { const m = MOVIES[k]; if (m) chips.push(`<a class="chip" href="${esc(m.url)}" data-k="${esc(k)}">▶ ${esc(m.title)}</a>`); });
-  if (s.scene && inScene(s.scene).length) chips.push(`<a class="chip" href="#photos" data-tab="${esc(s.scene)}">📷 フォトを一覧で見る</a>`);
-  tl += `<div class="step fade"><span class="dot"></span>
+  const n = s.scene ? inScene(s.scene).length : 0;
+  if (n) chips.push(`<a class="chip" href="gallery.html#${esc(s.scene)}">📷 この場面の写真をすべて見る（${n}枚）</a>`);
+  tl += `<div class="step fade" data-step-scene="${esc(s.scene||"")}"><span class="dot"></span>
     <div class="time">${esc(s.time)}</div><h3>${esc(s.title)}</h3><p>${esc(s.desc||"")}</p>
     ${s.scene ? carousel(s.scene) : ""}
     ${chips.length ? `<div class="chips">${chips.join("")}</div>` : ""}</div>`;
@@ -420,94 +189,50 @@ $("#timeline").innerHTML = tl;
 document.addEventListener("click", e => {
   const nb = e.target.closest(".nb");
   if (nb) { const tr = nb.parentElement.querySelector(".track"); tr.scrollBy({left:(nb.classList.contains("cnext")?1:-1)*tr.clientWidth*.8, behavior:"smooth"}); return; }
-  const sl = e.target.closest(".sl");
-  if (sl) openLb(inScene(sl.dataset.scene), +sl.dataset.i, false);
+  const sl = e.target.closest(".sl:not(.more)");
+  if (sl) openLb(inScene(sl.dataset.scene).slice(0, CONFIG.carouselCount), +sl.dataset.i, false);
 });
 
-/* ---------- ギャラリー ---------- */
-let currentScene = "all", visible = [];
-function renderTabs(){
-  const tabs = [{id:"all",label:"すべて"}, ...SCENES.filter(s => inScene(s.id).length)];
-  $("#tabs").innerHTML = tabs.map(t => `<button class="tab ${t.id===currentScene?"on":""}" data-id="${t.id}">${esc(t.label)}</button>`).join("");
+/* ---------- リボン＆バブルシャワー（トップ画面は常時、ガーデンの場面は見えたときに1回） ---------- */
+showerLoop($("#heroShower"));
+const gardenStep = $('.step[data-step-scene="garden"]');
+if (gardenStep) {
+  const once = new IntersectionObserver(es => { if (es[0].isIntersecting) { once.disconnect(); showerBurst(gardenStep); } }, {threshold:.4});
+  once.observe(gardenStep);
 }
-function renderGrid(){
-  visible = PHOTOS.filter(p => currentScene==="all" || p.scene===currentScene);
-  $("#grid").innerHTML = visible.map((p,i) => `<div class="ph" data-i="${i}">
-    <img src="${esc(THUMB_DIR+p.file)}" alt="${esc(p.cap||"結婚式の写真")}" loading="lazy" data-fb data-ratio="${i%3===0?"3/4":"4/3"}">
-    <a class="dl" href="${esc(PHOTO_DIR+p.file)}" download="${esc(baseName(p.file))}" title="保存">↓</a></div>`).join("");
-}
-$("#tabs").addEventListener("click", e => {
-  const b = e.target.closest(".tab"); if (!b) return;
-  currentScene = b.dataset.id; renderTabs(); renderGrid();
-});
-document.addEventListener("click", e => {
-  const c = e.target.closest("[data-tab]"); if (!c) return;
-  currentScene = c.dataset.tab; renderTabs(); renderGrid();
-});
-$("#grid").addEventListener("click", e => {
-  if (e.target.closest(".dl")) return;
-  const f = e.target.closest(".ph"); if (f) openLb(visible, +f.dataset.i, false);
-});
-$("#slideBtn").onclick = () => { if (visible.length) openLb(visible, 0, true); };
-renderTabs(); renderGrid();
-if (CONFIG.zipUrl) $("#zipWrap").innerHTML = `<a class="btn" href="${esc(CONFIG.zipUrl)}" target="_blank" rel="noopener">写真をまとめて保存 ↓</a>`;
 
-/* ---------- ライトボックス＋スライドショー ---------- */
-const lb = $("#lb");
-let lbList = [], idx = 0, timer = null;
-function renderLb(){
-  const p = lbList[idx], full = PHOTO_DIR + p.file;
-  const img = new Image();
-  img.src = THUMB_DIR + p.file; img.alt = p.cap || ""; img.setAttribute("data-fb","1"); img.dataset.ratio = "3/2";
-  $("#lbMedia").replaceChildren(img);
-  // まず軽量版を出し、高画質版（large/）が読み込めたら差し替える
-  const hi = new Image();
-  hi.onload = () => { if (img.isConnected) img.src = full; };
-  hi.src = full;
-  $("#lbCap").textContent = p.cap || "";
-  $("#lbCnt").textContent = `${idx+1} / ${lbList.length}`;
-  $("#lbDl").href = full; $("#lbDl").setAttribute("download", baseName(p.file));
-}
-function stepLb(d){ idx = (idx + d + lbList.length) % lbList.length; renderLb(); }
-function setPlay(on){
-  clearInterval(timer); timer = null;
-  $("#lbPlay").textContent = on ? "❚❚ 停止" : "▶ スライドショー";
-  if (on) timer = setInterval(() => stepLb(1), CONFIG.slideSeconds*1000);
-}
-function openLb(list, i, auto){
-  if (!list.length) return;
-  lbList = list; idx = i; renderLb();
-  lb.classList.add("open"); document.body.style.overflow = "hidden";
-  setPlay(!!auto);
-}
-function closeLb(){ setPlay(false); lb.classList.remove("open"); document.body.style.overflow = ""; }
-$("#lbClose").onclick = closeLb;
-$("#lbPrev").onclick = () => { stepLb(-1); if (timer) setPlay(true); };
-$("#lbNext").onclick = () => { stepLb(1);  if (timer) setPlay(true); };
-$("#lbPlay").onclick = () => setPlay(!timer);
-lb.addEventListener("click", e => { if (e.target===lb) closeLb(); });
-let sx = 0;
-$("#lbMedia").addEventListener("touchstart", e => { sx = e.changedTouches[0].clientX; }, {passive:true});
-$("#lbMedia").addEventListener("touchend", e => {
-  const dx = e.changedTouches[0].clientX - sx;
-  if (Math.abs(dx) > 50) { stepLb(dx<0 ? 1 : -1); if (timer) setPlay(true); }
-}, {passive:true});
-document.addEventListener("keydown", e => {
-  if (e.key==="Escape") { if (lb.classList.contains("open")) closeLb(); if (vm.classList.contains("open")) closeVideo(); }
-  if (!lb.classList.contains("open")) return;
-  if (e.key==="ArrowLeft") stepLb(-1);
-  if (e.key==="ArrowRight") stepLb(1);
-  if (e.key===" ") { e.preventDefault(); setPlay(!timer); }
-});
+/* ---------- フォト（全体から均等に選んだハイライトを、ポラロイド風に） ---------- */
+const step = PHOTOS.length / Math.max(1, CONFIG.highlightCount);
+const HL = Array.from({length: Math.min(CONFIG.highlightCount, PHOTOS.length)}, (_,i) => PHOTOS[Math.floor(i*step + step/2)]);
+$("#highlights").innerHTML = HL.map((p,i) => `<button class="hl-item" data-i="${i}" aria-label="${esc(sceneLabel(p.scene)||"写真")}を拡大">
+  <span class="pic"><img src="${esc(SMALL_DIR+p.file)}" alt="" loading="lazy" data-fb data-ratio="1/1"></span>
+  <span class="memo">${esc(p.cap || sceneLabel(p.scene))}</span></button>`).join("");
+$("#highlights").addEventListener("click", e => { const b = e.target.closest(".hl-item"); if (b) openLb(HL, +b.dataset.i, false); });
+$("#galleryBtn").textContent = `すべての写真を見る（${PHOTOS.length}枚）`;
+if (CONFIG.zipUrl) $("#zipWrap").innerHTML = `<a class="btn line" href="${esc(CONFIG.zipUrl)}" target="_blank" rel="noopener">写真をまとめて保存 ↓</a>`;
 
 /* ---------- エンドロール ---------- */
 $("#credits").innerHTML = CREDITS.map(c =>
   `<div class="role">${esc(c.role)}</div>` + c.names.map(n=>`<div class="nm">${esc(n)}</div>`).join("")
 ).join("") + `<div class="last">${esc(CREDIT_LAST)}</div>`;
 
+// 映画のように下から上へ流す（見えている間だけ。タップで一時停止）
+const roll = $("#roll"), credits = $("#credits");
+function setupRoll(){
+  // 枠の真ん中あたりから始めて、開いた瞬間から最初の名前が見えるようにする
+  const from = Math.round(roll.clientHeight * 0.45), to = -credits.offsetHeight;
+  roll.style.setProperty("--from", from + "px");
+  roll.style.setProperty("--to", to + "px");
+  roll.style.setProperty("--dur", Math.round((from - to) / 38) + "s");   // 約38px/秒
+}
+setupRoll();
+addEventListener("resize", setupRoll);
+document.fonts && document.fonts.ready.then(setupRoll);
+new IntersectionObserver(es => roll.classList.toggle("rolling", es[0].isIntersecting && !roll.classList.contains("hold")), {threshold:.3}).observe(roll);
+roll.addEventListener("click", () => { roll.classList.toggle("hold"); roll.classList.toggle("rolling", !roll.classList.contains("hold")); });
+
 /* ---------- フェードイン・ナビ強調 ---------- */
-const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } }), {threshold:.1});
-document.querySelectorAll(".fade").forEach(el => io.observe(el));
+observeFades();
 const links = [...document.querySelectorAll("nav a")];
 const spy = new IntersectionObserver(es => es.forEach(en => {
   if (en.isIntersecting) links.forEach(a => a.classList.toggle("on", a.getAttribute("href")==="#"+en.target.id));

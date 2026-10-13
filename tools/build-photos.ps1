@@ -1,8 +1,8 @@
-# Generates thumbs/ (for display), large/ (for saving) and photos.js (photo list) from photos/.
+# Generates sm/ (grid tiles), thumbs/ (first view when enlarged), large/ (enlarged + saving) and photos.js from photos/.
 # Usage: powershell -ExecutionPolicy Bypass -File tools\build-photos.ps1
 # - The scene of a photo is its folder name: photos/<scene id>/xxx.jpg (photos directly in photos/ = no scene).
-# - thumbs/ and large/ mirror photos/. Existing files are kept; ones whose original is gone are deleted.
-# - photos/ (originals) stays on this PC only (.gitignore); the site uses thumbs/ and large/.
+# - sm/, thumbs/ and large/ mirror photos/. Existing files are kept; ones whose original is gone are deleted.
+# - photos/ (originals) stays on this PC only (.gitignore); the site uses sm/, thumbs/ and large/.
 
 Add-Type -AssemblyName System.Drawing
 $root   = Split-Path -Parent $PSScriptRoot
@@ -11,6 +11,7 @@ $list   = Join-Path $root "photos.js"
 $utf8   = New-Object System.Text.UTF8Encoding $false
 $jpeg   = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object MimeType -eq "image/jpeg"
 $targets = @(
+  @{ Dir = Join-Path $root "sm";     MaxSide = 480;  Quality = 78 },
   @{ Dir = Join-Path $root "thumbs"; MaxSide = 1000; Quality = 82 },
   @{ Dir = Join-Path $root "large";  MaxSide = 2400; Quality = 85 }
 )
@@ -28,7 +29,7 @@ foreach ($t in $targets) {
   $made = 0
   foreach ($f in $files) {
     $out = Join-Path $t.Dir (RelPath $photos $f.FullName)
-    if (Test-Path $out) { continue }
+    if (Test-Path -LiteralPath $out) { continue }
     New-Item -ItemType Directory -Force (Split-Path -Parent $out) | Out-Null
     $img = [System.Drawing.Image]::FromFile($f.FullName)
     try {
@@ -55,7 +56,7 @@ foreach ($t in $targets) {
   # Remove files whose original was moved or deleted, then empty folders
   $removed = 0
   foreach ($x in Get-ChildItem $t.Dir -File -Recurse | Where-Object Name -ne ".gitkeep") {
-    if (-not (Test-Path (Join-Path $photos (RelPath $t.Dir $x.FullName)))) { Remove-Item $x.FullName; $removed++ }
+    if (-not (Test-Path -LiteralPath (Join-Path $photos (RelPath $t.Dir $x.FullName)))) { Remove-Item -LiteralPath $x.FullName; $removed++ }
   }
   Get-ChildItem $t.Dir -Directory -Recurse | Sort-Object { $_.FullName.Length } -Descending |
     Where-Object { -not (Get-ChildItem $_.FullName -Force) } | Remove-Item
