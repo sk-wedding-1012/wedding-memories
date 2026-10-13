@@ -129,8 +129,8 @@ section{padding:84px 22px;max-width:980px;margin:0 auto}
 .ov .x{position:absolute;top:12px;right:18px;font-size:1.9rem;color:#fff;cursor:pointer;background:none;border:0}
 .ov .cap{color:#e8dcc6;font-size:.85rem;margin-top:10px;min-height:1.4em}
 .ov .cnt{color:#bfae92;font-family:var(--serif-en);letter-spacing:.2em}
-.vbox{width:min(96vw,960px);aspect-ratio:16/9;background:#000}
-.vbox iframe{width:100%;height:100%;border:0}
+.vbox{width:min(96vw,960px,calc((100svh - 160px)*16/9));aspect-ratio:16/9;background:#000;position:relative;overflow:hidden}
+.vbox iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;transform-origin:0 0}
 .vnote{color:#cdbfa6;font-size:.78rem;margin-top:12px}
 
 /* End roll */
@@ -369,6 +369,16 @@ function driveEmbed(url){
   return m ? `https://drive.google.com/file/d/${m[1]}/preview` : null;
 }
 const vm = $("#vm");
+// Googleドライブの再生画面は幅が狭いと中身がはみ出すので、640px幅で描画して縮小表示する
+const VIDEO_MIN_W = 640;
+function fitVideo(){
+  const f = $("#vmFrame"), w = $(".vbox").clientWidth;
+  if (w && w < VIDEO_MIN_W) {
+    f.style.width = VIDEO_MIN_W + "px"; f.style.height = VIDEO_MIN_W*9/16 + "px";
+    f.style.transform = `scale(${w/VIDEO_MIN_W})`;
+  } else { f.style.width = f.style.height = f.style.transform = ""; }
+}
+window.addEventListener("resize", () => { if (vm.classList.contains("open")) fitVideo(); });
 function openVideo(key){
   const m = MOVIES[key], emb = driveEmbed(m.url);
   if (CONFIG.videoMode !== "modal" || !emb) { window.open(m.url, "_blank", "noopener"); return; }
@@ -376,6 +386,7 @@ function openVideo(key){
   $("#vmTitle").textContent = m.title;
   $("#vmOpen").href = m.url;
   vm.classList.add("open"); document.body.style.overflow = "hidden";
+  fitVideo();
 }
 function closeVideo(){ $("#vmFrame").src = "about:blank"; vm.classList.remove("open"); document.body.style.overflow = ""; }
 $("#vmClose").onclick = closeVideo;
