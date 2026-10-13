@@ -1,0 +1,9 @@
+{
+  "name": "wedding-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Wedding Memories 2026.10.12",
+  "scripts": {
+    "dev": "node server.js"
+  }
+}

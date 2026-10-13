@@ -1,0 +1,5 @@
+# 元写真はPCにだけ置く（公開するのは thumbs/ と large/）
+photos/
+node_modules/
+Thumbs.db
+desktop.ini
