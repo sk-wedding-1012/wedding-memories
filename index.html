@@ -449,6 +449,10 @@ function renderLb(){
   const img = new Image();
   img.src = THUMB_DIR + p.file; img.alt = p.cap || ""; img.setAttribute("data-fb","1"); img.dataset.ratio = "3/2";
   $("#lbMedia").replaceChildren(img);
+  // まず軽量版を出し、高画質版（large/）が読み込めたら差し替える
+  const hi = new Image();
+  hi.onload = () => { if (img.isConnected) img.src = full; };
+  hi.src = full;
   $("#lbCap").textContent = p.cap || "";
   $("#lbCnt").textContent = `${idx+1} / ${lbList.length}`;
   $("#lbDl").href = full; $("#lbDl").setAttribute("download", baseName(p.file));
