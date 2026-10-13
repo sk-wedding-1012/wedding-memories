@@ -162,9 +162,10 @@ document.addEventListener("click", e => {
 });
 
 /* ---------- 式の流れ（＋横スワイプのスライド。各場面は先頭の数枚だけ） ---------- */
+const carouselPicks = {};
 function carousel(sceneId){
   const all = inScene(sceneId); if (!all.length) return "";
-  const list = all.slice(0, CONFIG.carouselCount);
+  const list = carouselPicks[sceneId] = pickDistinct(all, CONFIG.carouselCount);
   const slides = list.map((p,i) => `<div class="sl" data-scene="${esc(sceneId)}" data-i="${i}">
     <img src="${esc(SMALL_DIR+p.file)}" alt="${esc(p.cap||"")}" loading="lazy" data-fb data-ratio="4/3"></div>`).join("");
   const more = all.length > list.length
@@ -190,7 +191,7 @@ document.addEventListener("click", e => {
   const nb = e.target.closest(".nb");
   if (nb) { const tr = nb.parentElement.querySelector(".track"); tr.scrollBy({left:(nb.classList.contains("cnext")?1:-1)*tr.clientWidth*.8, behavior:"smooth"}); return; }
   const sl = e.target.closest(".sl:not(.more)");
-  if (sl) openLb(inScene(sl.dataset.scene).slice(0, CONFIG.carouselCount), +sl.dataset.i, false);
+  if (sl) openLb(carouselPicks[sl.dataset.scene], +sl.dataset.i, false);
 });
 
 /* ---------- リボン＆バブルシャワー（トップ画面は常時、ガーデンの場面は見えたときに1回） ---------- */
@@ -202,11 +203,13 @@ if (gardenStep) {
 }
 
 /* ---------- フォト（全体から均等に選んだハイライトを、ポラロイド風に） ---------- */
-const step = PHOTOS.length / Math.max(1, CONFIG.highlightCount);
-const HL = Array.from({length: Math.min(CONFIG.highlightCount, PHOTOS.length)}, (_,i) => PHOTOS[Math.floor(i*step + step/2)]);
+const byFile = new Map(PHOTOS.map(p => [p.file, p]));
+const picked = (typeof HIGHLIGHTS !== "undefined" ? HIGHLIGHTS : [])
+  .map(([f, memo]) => byFile.has(f) && { ...byFile.get(f), memo }).filter(Boolean);
+const HL = picked.length ? picked : pickDistinct(PHOTOS, CONFIG.highlightCount);
 $("#highlights").innerHTML = HL.map((p,i) => `<button class="hl-item" data-i="${i}" aria-label="${esc(sceneLabel(p.scene)||"写真")}を拡大">
   <span class="pic"><img src="${esc(SMALL_DIR+p.file)}" alt="" loading="lazy" data-fb data-ratio="1/1"></span>
-  <span class="memo">${esc(p.cap || sceneLabel(p.scene))}</span></button>`).join("");
+  <span class="memo">${esc(p.memo || p.cap || sceneLabel(p.scene))}</span></button>`).join("");
 $("#highlights").addEventListener("click", e => { const b = e.target.closest(".hl-item"); if (b) openLb(HL, +b.dataset.i, false); });
 $("#galleryBtn").textContent = `すべての写真を見る（${PHOTOS.length}枚）`;
 if (CONFIG.zipUrl) $("#zipWrap").innerHTML = `<a class="btn line" href="${esc(CONFIG.zipUrl)}" target="_blank" rel="noopener">写真をまとめて保存 ↓</a>`;

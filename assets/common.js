@@ -9,11 +9,31 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 // シーン順 → 未分類の順に並べる
 const sceneOrder = id => { const i = SCENES.findIndex(s => s.id===id); return i<0 ? SCENES.length : i; };
 const PHOTOS = (window.PHOTO_LIST||[])
-  .map((p,n) => ({ scene:p.scene||"", file:p.file, cap:CAPS[p.file]||"", n }))
+  .map((p,n) => ({ scene:p.scene||"", file:p.file, cap:CAPS[p.file]||"", h:p.h||"", n }))
   .sort((a,b) => sceneOrder(a.scene)-sceneOrder(b.scene) || a.n-b.n);
 const inScene = id => PHOTOS.filter(p => p.scene===id);
 const sceneLabel = id => (SCENES.find(s => s.id===id)||{}).label || "";
 const baseName = f => f.split("/").pop();
+
+/* 連写などで見た目がほぼ同じ写真を見分ける（h = build-photos.ps1 が作る64bitの見た目の指紋）
+   同じ場面で、指紋の違いが10bit以下なら「同じ写真」とみなす */
+const bits32 = x => { x -= (x >>> 1) & 0x55555555; x = (x & 0x33333333) + ((x >>> 2) & 0x33333333); return Math.imul((x + (x >>> 4)) & 0x0f0f0f0f, 0x01010101) >>> 24; };
+const lookDist = (a, b) => bits32(parseInt(a.slice(0,8),16) ^ parseInt(b.slice(0,8),16)) + bits32(parseInt(a.slice(8),16) ^ parseInt(b.slice(8),16));
+const looksSame = (p, q) => p.scene===q.scene && p.h && q.h && lookDist(p.h, q.h) <= 10;
+
+// list から n 枚を、全体に均等に・見た目が重ならないように選ぶ（元の並び順のまま返す）
+function pickDistinct(list, n){
+  if (!list.length || n <= 0) return [];
+  const chosen = [], ok = p => !chosen.some(c => looksSame(c, p));
+  const step = list.length / n;
+  for (let i = 0; i < n; i++) {
+    const a = Math.floor(i*step), b = Math.max(a+1, Math.floor((i+1)*step)), mid = (a + b - 1) / 2;
+    const seg = list.slice(a, b).map((p,k) => [p, Math.abs(a+k-mid)]).sort((x,y) => x[1]-y[1]).map(x => x[0]);
+    const p = seg.find(ok); if (p) chosen.push(p);
+  }
+  for (const p of list) { if (chosen.length >= n) break; if (!chosen.includes(p) && ok(p)) chosen.push(p); }
+  return chosen.sort((x,y) => list.indexOf(x) - list.indexOf(y));
+}
 
 // 画像が無いとき・読み込み失敗時は「♡」の代わり表示に差し替え
 document.addEventListener("error", e => {

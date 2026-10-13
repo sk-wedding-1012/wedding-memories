@@ -32,7 +32,7 @@ const SCENES = [
   { id:"party",    label:"入場・乾杯" },
   { id:"flambe",   label:"キッチンオープン" },
   { id:"game",     label:"ゲスト参加イベント" },
-  { id:"remake",   label:"リメイク・デザート" },
+  { id:"remake",   label:"お色直し・デザート" },
   { id:"thanks",   label:"ご挨拶・花束" },
   { id:"farewell", label:"門出・送賓" },
 ];
@@ -52,9 +52,25 @@ const FLOW = [
   { time:"11:15", title:"キッチンオープン・お写真タイム", desc:"新郎のフランベパフォーマンスでキッチンがオープン。料理長のメニュー紹介と撮影タイム。", scene:"flambe" },
   { time:"11:40", title:"ゲスト参加型イベント", desc:"ケーキの代わりに、みなさまと楽しんだ時間。【要確認：実際の内容】", scene:"game" },
   { time:"11:55", title:"中座・プロフィールムービー", desc:"ふたりが中座している間に、ふたりのこれまでをドラクエ風に紹介。", movies:["profile"] },
-  { time:"12:20", title:"リメイク入場・デザートビュッフェ", desc:"ガーデンでデザートビュッフェ。コーヒーや紅茶とともに。", scene:"remake" },
+  { time:"12:20", title:"お色直し入場・デザートビュッフェ", desc:"ガーデンでデザートビュッフェ。コーヒーや紅茶とともに。", scene:"remake" },
   { time:"13:00", title:"テーブルインタビュー・お手紙・花束・謝辞", desc:"ご両親へ感謝を伝え、花束と記念品をお渡ししました。", scene:"thanks" },
   { time:"13:20", title:"エンドロール・門出・送賓", desc:"エンドロールのあと、みなさまをお見送りしました。", movies:["ending"], scene:"farewell" },
+];
+
+// トップのフォト欄に出す写真 ["フォルダ/ファイル名", "ポラロイドの下の言葉"]（並び順どおり）。空にすると自動で選ぶ
+const HIGHLIGHTS = [
+  ["prep/00889149-7078-4F8C-9DB0-20A41530A97F.JPEG", "ウェルカムスペース"],
+  ["enter/LINE_ALBUM_がわー_261013_42.jpg", "新婦入場"],
+  ["vows/LINE_ALBUM_小川家_結婚式_20261012_261013_166.jpg", "結婚証明書"],
+  ["vows/LINE_ALBUM_小川家_結婚式_20261012_261013_185.jpg", "祭壇の前で"],
+  ["garden/20B73934-D4DF-443B-BF43-5B32CDA21431.JPEG", "退場・ガーデン"],
+  ["garden/LINE_ALBUM_がわー_261013_30.jpg", "ストラックアウト"],
+  ["party/A0529541-CA2F-4452-B09C-953B1E7AA07E.JPEG", "階段から入場"],
+  ["party/E4CA8C51-AE61-438F-829A-04F537F46A28.JPEG", "高砂で"],
+  ["flambe/LINE_ALBUM_がわー_261013_17.jpg", "シェフ姿の新郎"],
+  ["flambe/LINE_ALBUM_小川家_結婚式_20261012_261013_87.jpg", "お料理"],
+  ["remake/19146EB1-D1C8-461D-8216-EC8B020578A3.JPEG", "お色直し"],
+  ["remake/3D31FE2E-F4AE-4D29-A4C2-E83EEBAB3BAF.JPEG", "ガーデンで集合"],
 ];
 
 // キャプションを付けたい写真は "フォルダ/ファイル名":"文章" を足す

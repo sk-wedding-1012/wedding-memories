@@ -41,7 +41,7 @@ wedding-site/
    | `party` | 入場・乾杯 |
    | `flambe` | キッチンオープン |
    | `game` | ゲスト参加イベント |
-   | `remake` | リメイク・デザート |
+   | `remake` | お色直し・デザート |
    | `thanks` | ご挨拶・花束 |
    | `farewell` | 門出・送賓 |
 
