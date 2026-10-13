@@ -3,3 +3,7 @@ photos/
 node_modules/
 Thumbs.db
 desktop.ini
+
+# 動画ファイルは容量が大きいので公開しない（Googleドライブで配信）
+*.mp4
+*.mov

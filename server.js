@@ -38,6 +38,15 @@ http.createServer((req, res) => {
   }
   let file = path.join(ROOT, url.endsWith("/") ? url + "index.html" : url);
   if (!file.startsWith(ROOT)) { res.writeHead(403).end(); return; }
+  // 動画は途中から再生できるよう、範囲指定（Range）での読み込みに対応する
+  if (/\.mp4$/i.test(file) && fs.existsSync(file)) {
+    const size = fs.statSync(file).size, m = /bytes=(\d*)-(\d*)/.exec(req.headers.range || "");
+    if (!m) { res.writeHead(200, { "Content-Type": "video/mp4", "Content-Length": size, "Accept-Ranges": "bytes" }); fs.createReadStream(file).pipe(res); return; }
+    const start = m[1] ? +m[1] : size - +m[2], end = m[1] && m[2] ? Math.min(+m[2], size - 1) : size - 1;
+    res.writeHead(206, { "Content-Type": "video/mp4", "Content-Length": end - start + 1, "Content-Range": `bytes ${start}-${end}/${size}`, "Accept-Ranges": "bytes" });
+    fs.createReadStream(file, { start, end }).pipe(res);
+    return;
+  }
   fs.readFile(file, (err, buf) => {
     if (err) { res.writeHead(404).end("Not found"); return; }
     const ext = path.extname(file).toLowerCase();

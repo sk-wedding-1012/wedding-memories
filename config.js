@@ -9,17 +9,20 @@ const CONFIG = {
   thanks: "お忙しい中ご列席くださり、本当にありがとうございました。\nあの日の景色を、ここにそっと残しておきます。",
   footText: "2026.10.12　Groom & Bride",
   zipUrl: "",                 // 写真まとめて保存用のGoogleドライブURL（なければ空）
-  videoMode: "link",          // "link"=Googleドライブで開く（画質が良い） / "modal"=ページ上で再生（ドライブの埋め込みは画質が落ちる）
+  videoMode: "modal",         // カードを押したとき "modal"=このページで再生 / "link"=Googleドライブを開く（どちらもボタンで選べる）
   slideSeconds: 4,            // スライドショーの切替秒数
   highlightCount: 12,         // トップページのフォト欄に出す枚数
-  carouselCount: 12,          // 式の流れの各場面に出す枚数（残りは「もっと見る」でギャラリーへ）
+  carouselCount: 12,
+  endrollScene: "farewell",   // エンドロールの両サイドに流す写真の場面（photos/ のフォルダ名）          // 式の流れの各場面に出す枚数（残りは「もっと見る」でギャラリーへ）
 };
 
 // 動画：url にGoogleドライブの共有リンク（「リンクを知っている全員」）を入れる
+// カードには「このページで再生」と「Googleドライブで開く」の2つのボタンが出る。poster はカードに出す画像（任意）
 const MOVIES = {
   opening: { title:"オープニングムービー「LOVE SYNC」", desc:"リズムゲーム風のオープニング映像", url:"https://drive.google.com/file/d/1wquaZTp3oqBS5t1DAMDdhtrKgHqeQWZE/view?usp=sharing", style:"sync" },
   profile: { title:"プロフィールムービー",               desc:"ドラクエ風・ふたりのこれまで",     url:"https://drive.google.com/file/d/1COxaFFNYu1JYIoZBVfWYRRc4nKk6OyX2/view?usp=sharing", style:"dq" },
-  ending:  { title:"エンドロールムービー",               desc:"ご列席の皆さまへの感謝を込めて",   url:"https://drive.google.com/file/d/16G1g4jcuKUzzYhb8ngBkZcPXBsP0N3at/view?usp=sharing", style:"end" },
+  ending:  { title:"エンドロールムービー",               desc:"ご列席の皆さまへの感謝を込めて",   url:"https://drive.google.com/file/d/16G1g4jcuKUzzYhb8ngBkZcPXBsP0N3at/view?usp=sharing", style:"end",
+             poster:"movies/endroll.jpg" },
 };
 
 // 写真のシーン（タブ兼・式の流れの各場面）。id は photos/ の中のフォルダ名

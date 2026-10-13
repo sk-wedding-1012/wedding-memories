@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Shippori+Mincho:wght@400;500;700&family=Klee+One:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=202610132030">
+<link rel="stylesheet" href="assets/style.css?v=202610132223">
 </head>
 <body>
 
@@ -73,8 +73,12 @@
     <p style="color:#c9bca5">本日お越しくださった皆さまへ</p>
   </div>
   <div id="endMovie"></div>
-  <div class="roll" id="roll" title="タップで一時停止"><div class="credits" id="credits"></div></div>
-  <p class="roll-hint">クレジットは自動で流れます（タップで一時停止）</p>
+  <div class="roll-wrap" id="rollWrap">
+    <div class="roll-side" id="sideL" aria-hidden="true"><div class="strip"></div></div>
+    <div class="roll" id="roll" title="タップで一時停止"><div class="credits" id="credits"></div></div>
+    <div class="roll-side" id="sideR" aria-hidden="true"><div class="strip"></div></div>
+  </div>
+  <p class="roll-hint">クレジットは自動で流れます（文字をタップで一時停止・写真をタップで拡大）</p>
 </section>
 
 <footer>
@@ -85,16 +89,19 @@
 <!-- Video modal -->
 <div class="ov" id="vm" role="dialog" aria-modal="true">
   <button class="x" id="vmClose" aria-label="閉じる">×</button>
-  <div class="vbox"><iframe id="vmFrame" allow="autoplay; fullscreen" allowfullscreen title="video"></iframe></div>
+  <div class="vbox">
+    <iframe id="vmFrame" allow="autoplay; fullscreen" allowfullscreen title="video"></iframe>
+    <video id="vmVideo" controls playsinline preload="metadata"></video>
+  </div>
   <p class="vnote" id="vmTitle"></p>
   <p class="vtip" id="vmTip"></p>
   <div class="bar"><a id="vmOpen" target="_blank" rel="noopener">Googleドライブで開く ↗</a></div>
 </div>
 
-<script src="config.js?v=202610132030"></script>
-<script src="photos.js?v=202610132030"></script>
-<script src="assets/common.js?v=202610132030"></script>
-<script src="assets/shower.js?v=202610132030"></script>
+<script src="config.js?v=202610132223"></script>
+<script src="photos.js?v=202610132223"></script>
+<script src="assets/common.js?v=202610132223"></script>
+<script src="assets/shower.js?v=202610132223"></script>
 <script>
 // Hero / footer
 $("#nameA").textContent = CONFIG.nameA;
@@ -106,18 +113,22 @@ $("#footText").textContent = CONFIG.footText;
 
 /* ---------- 動画 ---------- */
 const playSvg = '<svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg>';
+// カード本体を押すとこのページで再生。下の2つのボタンで「このページで再生」「Googleドライブで開く」を選べる
 function movieCard(key){
   const m = MOVIES[key];
-  return `<a class="mcard" href="${esc(m.url)}" target="_blank" rel="noopener" data-k="${esc(key)}">
-    <div class="mthumb ${esc(m.style||"")}"><div class="play">${playSvg}</div></div>
-    <h3>${esc(m.title)}</h3><p>${esc(m.desc||"")}</p><div class="go">PLAY →</div></a>`;
+  return `<div class="mcard">
+    <a class="mplay" href="${esc(m.url)}" data-k="${esc(key)}">
+      <div class="mthumb ${esc(m.style||"")}${m.poster ? " has-poster" : ""}"${m.poster ? ` style="background-image:url('${esc(m.poster)}')"` : ""}><div class="play">${playSvg}</div></div>
+      <h3>${esc(m.title)}</h3><p>${esc(m.desc||"")}</p></a>
+    <div class="mlinks">
+      <a class="mbtn" href="${esc(m.url)}" data-k="${esc(key)}">▶ このページで再生</a>
+      <a class="mbtn line" href="${esc(m.url)}" target="_blank" rel="noopener">Googleドライブで開く ↗</a>
+    </div></div>`;
 }
 $("#movieGrid").innerHTML = Object.keys(MOVIES).filter(k=>k!=="ending").map(movieCard).join("");
 $("#endMovie").innerHTML = movieCard("ending");
-if (CONFIG.videoMode === "link") {
-  $("#movieLead").textContent = "タップするとGoogleドライブが開き、高画質で再生できます";
-  $("#movieNote").textContent = "※ スマホではGoogleドライブのアプリ、またはブラウザで再生されます";
-}
+$("#movieLead").textContent = "このページで再生するか、Googleドライブで開くかを選べます";
+$("#movieNote").textContent = "※ このページでの再生は画質が少し落ちることがあります。きれいに見たいときは「Googleドライブで開く」をどうぞ";
 
 // 動画のURLから埋め込み用URLを作る。YouTube（限定公開でOK）と Googleドライブに対応
 function videoEmbed(url){
@@ -141,18 +152,34 @@ function fitVideo(){
 }
 window.addEventListener("resize", () => { if (vm.classList.contains("open")) fitVideo(); });
 function openVideo(key){
-  const m = MOVIES[key], emb = videoEmbed(m.url);
+  const m = MOVIES[key];
+  $("#vmTitle").textContent = m.title;
+  $("#vmOpen").href = m.url;
+  if (m.file) {
+    // サイトに置いた動画ファイルをそのまま再生（Googleドライブを使わないので誰でも見られる）
+    videoKind = "file";
+    const v = $("#vmVideo");
+    v.poster = m.poster || ""; v.src = m.file;
+    vm.classList.add("open", "is-file"); document.body.style.overflow = "hidden";
+    $("#vmTip").textContent = "";
+    $("#vmOpen").textContent = "Googleドライブで開く ↗";
+    v.play().catch(() => {});   // 自動再生できない端末では再生ボタンを押してもらう
+    return;
+  }
+  const emb = videoEmbed(m.url);
   if (CONFIG.videoMode !== "modal" || !emb) { window.open(m.url, "_blank", "noopener"); return; }
   videoKind = emb.kind;
   $("#vmFrame").src = emb.src;
-  $("#vmTitle").textContent = m.title;
   $("#vmTip").textContent = emb.kind === "drive" ? "画質が粗いときは、再生画面の歯車アイコンから画質を選ぶか、全画面にしてください" : "";
-  $("#vmOpen").href = m.url;
   $("#vmOpen").textContent = emb.kind === "youtube" ? "YouTubeで開く ↗" : "Googleドライブで開く ↗";
-  vm.classList.add("open"); document.body.style.overflow = "hidden";
+  vm.classList.add("open"); vm.classList.remove("is-file"); document.body.style.overflow = "hidden";
   fitVideo();
 }
-function closeVideo(){ $("#vmFrame").src = "about:blank"; vm.classList.remove("open"); document.body.style.overflow = ""; }
+function closeVideo(){
+  $("#vmFrame").src = "about:blank";
+  const v = $("#vmVideo"); v.pause(); v.removeAttribute("src"); v.load();
+  vm.classList.remove("open", "is-file"); document.body.style.overflow = "";
+}
 $("#vmClose").onclick = closeVideo;
 vm.addEventListener("click", e => { if (e.target===vm) closeVideo(); });
 document.addEventListener("keydown", e => { if (e.key==="Escape" && vm.classList.contains("open")) closeVideo(); });
@@ -219,20 +246,33 @@ $("#credits").innerHTML = CREDITS.map(c =>
   `<div class="role">${esc(c.role)}</div>` + c.names.map(n=>`<div class="nm">${esc(n)}</div>`).join("")
 ).join("") + `<div class="last">${esc(CREDIT_LAST)}</div>`;
 
-// 映画のように下から上へ流す（見えている間だけ。タップで一時停止）
-const roll = $("#roll"), credits = $("#credits");
+// 両サイドの写真（左右に交互に並べ、2回くり返して切れ目なく流す）
+const SIDE = inScene(CONFIG.endrollScene || "farewell");
+["#sideL", "#sideR"].forEach((sel, k) => {
+  const mine = SIDE.filter((_, i) => i % 2 === k);
+  const one = mine.map(p => `<button class="side-ph" data-i="${SIDE.indexOf(p)}" tabindex="-1"><img src="${esc(SMALL_DIR+p.file)}" alt="" loading="lazy" data-fb data-ratio="3/4"></button>`).join("");
+  $(sel + " .strip").innerHTML = one + one;
+});
+if (!SIDE.length) $("#rollWrap").classList.add("no-side");
+$("#rollWrap").addEventListener("click", e => { const b = e.target.closest(".side-ph"); if (b) openLb(SIDE, +b.dataset.i, false); });
+
+// 映画のように下から上へ流す（見えている間だけ。文字をタップで一時停止）
+const roll = $("#roll"), credits = $("#credits"), wrap = $("#rollWrap");
+const SPEED = 38;   // 1秒に進む px
 function setupRoll(){
   // 枠の真ん中あたりから始めて、開いた瞬間から最初の名前が見えるようにする
   const from = Math.round(roll.clientHeight * 0.45), to = -credits.offsetHeight;
   roll.style.setProperty("--from", from + "px");
   roll.style.setProperty("--to", to + "px");
-  roll.style.setProperty("--dur", Math.round((from - to) / 38) + "s");   // 約38px/秒
+  roll.style.setProperty("--dur", Math.round((from - to) / SPEED) + "s");
+  document.querySelectorAll(".roll-side .strip").forEach(s => s.style.setProperty("--sdur", Math.max(10, Math.round(s.scrollHeight / 2 / SPEED)) + "s"));
 }
 setupRoll();
 addEventListener("resize", setupRoll);
 document.fonts && document.fonts.ready.then(setupRoll);
-new IntersectionObserver(es => roll.classList.toggle("rolling", es[0].isIntersecting && !roll.classList.contains("hold")), {threshold:.3}).observe(roll);
-roll.addEventListener("click", () => { roll.classList.toggle("hold"); roll.classList.toggle("rolling", !roll.classList.contains("hold")); });
+document.querySelectorAll(".roll-side img").forEach(i => i.addEventListener("load", setupRoll, {once:true}));
+new IntersectionObserver(es => wrap.classList.toggle("rolling", es[0].isIntersecting && !wrap.classList.contains("hold")), {threshold:.3}).observe(wrap);
+roll.addEventListener("click", () => { wrap.classList.toggle("hold"); wrap.classList.toggle("rolling", !wrap.classList.contains("hold")); });
 
 /* ---------- フェードイン・ナビ強調 ---------- */
 observeFades();
